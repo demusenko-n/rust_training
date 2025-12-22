@@ -5,7 +5,30 @@ fn main() {
 }
 
 fn index_string(text: &str) -> HashMap<&str, Vec<usize>> {
-    return todo!();
+    let mut map = HashMap::<&str, Vec<usize>>::new();
+
+    let Some(mut word_start) = text.bytes().position(|b| b != b' ') else {
+        return map;
+    };
+
+    for (space_pos, _) in text.match_indices(' ') {
+        if space_pos < word_start {
+            continue;
+        }
+
+        if space_pos > word_start {
+            let word = &text[word_start..space_pos];
+            map.entry(word).or_default().push(word_start);
+        }
+        word_start = space_pos + 1;
+    }
+
+    if word_start < text.len() {
+        let word = &text[word_start..];
+        map.entry(word).or_default().push(word_start);
+    }
+
+    return map;
 }
 
 #[test]
