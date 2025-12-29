@@ -21,14 +21,14 @@ struct Args {
 }
 
 fn main() -> anyhow::Result<()> {
-    let file_appender = tracing_appender::rolling::never("logs", "day3.log");
-    let (file_writer, _guard) = tracing_appender::non_blocking(file_appender);
-
     OpenOptions::new()
         .create(true)
         .write(true)
         .truncate(true)
-        .open("logs/app.log")?;
+        .open("logs/day3.log")?;
+
+    let file_appender = tracing_appender::rolling::never("logs", "day3.log");
+    let (file_writer, _guard) = tracing_appender::non_blocking(file_appender);
 
     tracing_subscriber::registry()
         .with(EnvFilter::from_default_env())
@@ -41,11 +41,15 @@ fn main() -> anyhow::Result<()> {
         None => std::thread::available_parallelism()?,
     };
 
-    let result = day3::v1::index_directory_thr(&args.path, args.max_depth, max_threads)?;
-
     println!("{args:?} {max_threads}");
 
-    println!("{result:#?}");
+    // let resultv1 = day3::v1::index_directory_thr(&args.path, args.max_depth, max_threads)?;
+    // println!("{resultv1:#?}");
+
+    let resultv2 = day3::v2::index_directory_thr(&args.path, args.max_depth, max_threads)?;
+    println!("{resultv2:#?}");
+
+    // assert!(resultv1.map == resultv2.map);
 
     Ok(())
 }

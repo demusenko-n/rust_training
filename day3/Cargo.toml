@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 anyhow = "1.0.100"
 clap = "4.5.53"
+crossbeam-channel = "0.5.15"
 day2 = { version = "0.1.0", path = "../day2" }
 tracing = "0.1.44"
 tracing-appender = "0.2.4"
