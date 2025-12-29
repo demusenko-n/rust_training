@@ -29,7 +29,7 @@ pub struct GetFilenamesResult {
     pub errors: IoErrorCollector,
 }
 
-fn get_all_filenames(path: &Path, max_depth: u32) -> io::Result<GetFilenamesResult> {
+pub fn get_all_filenames(path: &Path, max_depth: u32) -> io::Result<GetFilenamesResult> {
     let mut res = GetFilenamesResult::default();
 
     if !fs::symlink_metadata(path)?.file_type().is_dir() {
@@ -103,7 +103,7 @@ pub fn index_file(path: &Path) -> io::Result<HashMap<String, Vec<usize>>> {
         .collect())
 }
 
-fn process_map(
+pub fn process_map(
     dest: &mut HashMap<String, HashMap<PathBuf, Vec<usize>>>,
     src: HashMap<String, Vec<usize>>,
     filename: PathBuf,
