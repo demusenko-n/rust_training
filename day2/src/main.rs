@@ -2,7 +2,6 @@ use std::{fs, path::PathBuf};
 
 use anyhow;
 use clap::Parser;
-mod utility_files;
 
 #[derive(Parser, Debug)]
 struct Args {
@@ -18,7 +17,7 @@ struct Args {
 
 fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    let result = utility_files::index_directory(&args.path, args.max_depth)?;
+    let result = day2::index_directory(&args.path, args.max_depth)?;
 
     if !result.errors.errors.is_empty() {
         println!("{:#?}", result.errors);
