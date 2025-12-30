@@ -16,10 +16,15 @@ struct Args {
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    println!("{args:?}");
 
     let result = day4::v1::index_directory_async(&args.path, args.max_depth).await?;
-    println!("{result:#?}");
+    let json = serde_json::to_string_pretty(&result.map)?;
+
+    if let Some(output_path) = args.output_file {
+        tokio::fs::write(&output_path, json).await?;
+    } else {
+        println!("{json}");
+    };
 
     Ok(())
 }
