@@ -47,7 +47,13 @@ fn main() -> anyhow::Result<()> {
     // println!("{resultv1:#?}");
 
     let resultv2 = day3::v2::index_directory_thr(&args.path, args.max_depth, max_threads)?;
-    println!("{resultv2:#?}");
+    let json = serde_json::to_string_pretty(&resultv2.map)?;
+
+    if let Some(output_path) = args.output_file {
+        std::fs::write(&output_path, json)?;
+    } else {
+        println!("{json}");
+    };
 
     // assert!(resultv1.map == resultv2.map);
 
