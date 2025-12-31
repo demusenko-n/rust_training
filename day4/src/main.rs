@@ -1,7 +1,5 @@
-use std::path::PathBuf;
-
-use anyhow;
 use clap::Parser;
+use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
 struct Args {
@@ -15,18 +13,15 @@ struct Args {
     max_depth: u32,
 }
 
-fn main() -> anyhow::Result<()> {
+#[tokio::main(flavor = "multi_thread")]
+async fn main() -> anyhow::Result<()> {
     let args = Args::parse();
-    let result = day2::index_directory(&args.path, args.max_depth)?;
 
-    // if !result.errors.errors.is_empty() {
-    //     println!("{:#?}", result.errors);
-    // }
-
+    let result = day4::v1::index_directory_async(&args.path, args.max_depth).await?;
     let json = serde_json::to_string_pretty(&result.map)?;
 
     if let Some(output_path) = args.output_file {
-        std::fs::write(&output_path, json)?;
+        tokio::fs::write(&output_path, json).await?;
     } else {
         println!("{json}");
     };
