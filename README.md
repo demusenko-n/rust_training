@@ -1,1 +1,1 @@
-index_string_task
+My solution to the tasks presented in Rust training.
